@@ -3,7 +3,7 @@ import random
 from k_domination import *
 from symmetric_mds import *
 from matching import *
-num_node = int(sys.argv[1])
+import time
 
 
 def process_arg(num_node):
@@ -20,22 +20,37 @@ def create_ws_model(num_node, edge):
     node_matrix = [[0] * num_node for _ in range(num_node)]
     for i in range(num_node):
         chosen = [i]
-        while (len(chosen) < edge+1):
+        while (sum(node_matrix[i]) < edge):
+            
             #randomly select neighbor
             neighbor = random.randint(0, num_node-1)
-            if neighbor not in chosen:
+            '''
+            print(f'sum(node_matrix[i]) = {sum(node_matrix[i])}')
+            print(f'nighbor = {neighbor}')
+            print(f'node matrix = {node_matrix}')
+            print(f'chosen = {chosen}')
+            '''
+            if (neighbor not in chosen) and (sum(node_matrix[neighbor]) < edge):
                 chosen.append(neighbor)
                 node_matrix[i][neighbor] = 1
                 node_matrix[neighbor][i] = 1
-
+            #time.sleep(3)
     return node_matrix
+
+#cmd input
+num_node = int(sys.argv[1])
 node_matrix = process_arg(num_node)
+
+#create ws model
 #node_matrix = create_ws_model(6, 2)
 #num_node = 6
+
+
 print(f'number of node : {num_node}')
 print(f'node matrix : ')
 for i in range(len(node_matrix)):
     print(f'{node_matrix[i]}')
+
 
 min = 10000
 best_solution = ''
@@ -51,11 +66,15 @@ print(f'the cardinality of 2-dominaiton game is {min}')
 print(f'solution = {best_solution}')
 print(f'---------------------------------')
 
+
+
+
 min = 100000
 best_solution = ''
 
 for _ in range(10):
     cardinality = symmetric_mds(node_matrix, num_node)
+    
     if sum(cardinality) <= min:
         min = sum(cardinality)
         best_solution = cardinality
@@ -70,7 +89,7 @@ print(f'---------------------------------')
 max = 0
 best_solution = ''
 
-for _ in range(5):
+for _ in range(10):
     count = 0
     cardinality = matching(node_matrix, num_node)
     temp = cardinality.copy()
@@ -80,7 +99,8 @@ for _ in range(5):
                 count += 1
                 temp[temp[i]] = 'null'
                 temp[i] = 'null'
-
+    if count ==0:
+        print(cardinality)
     if count >= max:
         max = count
         best_solution = cardinality
@@ -89,3 +109,4 @@ print(f'Requirement 2:')
 print(f'the cardinality of Matching game is {max}')
 print(f'solution = {best_solution}')
 print(f'---------------------------------')
+

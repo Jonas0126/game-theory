@@ -19,7 +19,8 @@ def calculate_g_mat(player_i, player_strategy):
         return beta
     
     elif cj == player_i:
-        return alpha
+        return gamma
+
     
 def calculate_w_mat(player_i, player_strategy, player_priority, node_matrix, num_node):
     ci = player_strategy[player_i]
@@ -28,7 +29,7 @@ def calculate_w_mat(player_i, player_strategy, player_priority, node_matrix, num
     for i in range(num_node):
         if node_matrix[ci][i] == 1 and i != player_i:
             if player_priority[player_i] <= player_priority[i] and player_strategy[i] == ci:
-                return gamma
+                return alpha
             
     return 0
 
@@ -62,38 +63,31 @@ def matching(node_matrix, num_node):
 
     #game start
     while 1:
-        #print(f'player {player_i} was chosen')
+        #print(f'player {player_i} is chosen')
         pre_strategy = player_strategy[player_i]
-        max = 0
-        best_strategy = None
+        max = -100000
+        #best_strategy = None
         for i in range(num_node):
             if node_matrix[player_i][i] == 1:
                 player_strategy[player_i] = i
                 u = calculate_u_mat(player_i, player_strategy, player_priority, node_matrix, num_node)
                 if u > max:
                     max = u
-                    best_strategy = i
-        
-        if max == 0:
+                    best_strategy = i       
+        if max < 0:
             player_strategy[player_i] = 'null'
             utility[player_i] = 0
         else:
             player_strategy[player_i] = best_strategy
             utility[player_i] = max
-
         if pre_strategy == player_strategy[player_i]:
             already_check.append(player_i)
         else:
             already_check.clear()
-
         move_count += 1
-
-        #print(f'player strategy after {move_count} update : {player_strategy}')
-        #print(f'----------------------------------------------------------')
-
+        #print(f'after {move_count} update : {player_strategy}')
         if len(already_check) == num_node:
             break
-
         while(1):
             player_i = random.randint(0, num_node-1)
             if player_i not in already_check:

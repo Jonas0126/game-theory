@@ -69,7 +69,6 @@ def symmetric_mds(node_matrix, num_node):
     
     #game start
     while(1):
-        #print(f'player {player_i} was chosen')
         pre_state = player_state[player_i]
         player_state[player_i] = 1
         
@@ -87,9 +86,6 @@ def symmetric_mds(node_matrix, num_node):
             already_check.clear()    
         
         move_count += 1
-        
-        #print(f'player state after {move_count} update : {player_state}')
-        #print(f'----------------------------------------------------------')
         
         if len(already_check) == num_node:
             break

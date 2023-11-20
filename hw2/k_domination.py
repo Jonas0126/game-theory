@@ -43,18 +43,12 @@ def calculate_u_kdominaiton(player_i, player_state, node_matrix, num_node):
         sum -= beta
         return sum
                
-def k_domination(node_matrix, num_node):
-    
+def k_domination(node_matrix, num_node): 
     #random initial game state
     player_state, utility = initial_game(num_node)
     
     for i in range(num_node):
         utility[i] = calculate_u_kdominaiton(i, player_state, node_matrix, num_node)
-    
-    
-    #print(f'initial player state = {player_state}')
-    #print(f'initial utility = {utility}')
-
 
     move_count = 0
     #random peak one player
@@ -73,15 +67,12 @@ def k_domination(node_matrix, num_node):
             player_state[player_i] = 0
             utility[player_i] = 0
 
-
         if pre_state == player_state[player_i]:
             already_check.append(player_i)
         else:
             already_check.clear()
 
         move_count += 1
-        #print(f'player state after {move_count} update : {player_state}')
-        #print(f'------------------------------------------------------------')
         if len(already_check) == num_node:
             break
         while(1):
