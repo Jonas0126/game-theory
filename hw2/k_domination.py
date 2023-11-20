@@ -52,16 +52,16 @@ def k_domination(node_matrix, num_node):
         utility[i] = calculate_u_kdominaiton(i, player_state, node_matrix, num_node)
     
     
-    print(f'initial player state = {player_state}')
-    print(f'initial utility = {utility}')
+    #print(f'initial player state = {player_state}')
+    #print(f'initial utility = {utility}')
 
 
     move_count = 0
     #random peak one player
     player_i = random.randint(0, num_node-1)
-    already_cheack = []
+    already_check = []
     while(1):
-        print(f'player {player_i} was chosen')
+        #print(f'player {player_i} was chosen')
         pre_state = player_state[player_i]
         player_state[player_i] = 1
 
@@ -75,16 +75,17 @@ def k_domination(node_matrix, num_node):
 
 
         if pre_state == player_state[player_i]:
-            already_cheack.append(player_i)
+            already_check.append(player_i)
         else:
-            already_cheack.clear()
+            already_check.clear()
 
         move_count += 1
-        print(f'player state after {move_count} update : {player_state}')
-        print(f'------------------------------------------------------------')
-        if len(already_cheack) == num_node:
+        #print(f'player state after {move_count} update : {player_state}')
+        #print(f'------------------------------------------------------------')
+        if len(already_check) == num_node:
             break
         while(1):
             player_i = random.randint(0, num_node-1)
-            if player_i not in already_cheack:
+            if player_i not in already_check:
                 break
+    return player_state
